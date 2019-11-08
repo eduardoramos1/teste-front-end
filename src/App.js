@@ -8,6 +8,7 @@ import Details from "./components/layout/videos/Details";
 
 const App = () => {
 	const [videos, setVideos] = useState([]);
+	const [videoDetail, setVideoDetail] = useState([]);
 
 	// normalmente eu iria colocar o .env.local no gitignore, por se tratar um teste, vou deixar publico, pois pretendo excluir a chave da api depois
 	const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
@@ -21,6 +22,15 @@ const App = () => {
 		console.log(videos);
 	};
 
+	const seeVideoDetail = async videoId => {
+		const res = await axios.get(
+			`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet,statistics&key=${apiKey}`
+		);
+		setVideoDetail(res.data.items);
+
+		console.log(videoDetail);
+	};
+
 	return (
 		<BrowserRouter>
 			<div className="App">
@@ -32,7 +42,17 @@ const App = () => {
 								<VideoItem key={i} video={video} />
 							))}
 						</Route>
-						<Route exact path="/details/:videoId" component={Details} />
+						<Route
+							exact
+							path="/details/:videoId"
+							render={props => (
+								<Details
+									{...props}
+									seeVideoDetail={seeVideoDetail}
+									videoDetail={videoDetail}
+								/>
+							)}
+						/>
 					</Switch>
 				</div>
 			</div>

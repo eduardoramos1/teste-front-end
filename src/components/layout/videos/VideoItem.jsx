@@ -12,7 +12,7 @@ export const VideoItem = props => {
 				</Link>
 				<h3> {title} </h3>
 				<p>{description}</p>
-				<img src={thumbnails.high.url}></img>
+				<img src={thumbnails.high.url} alt="img"></img>
 			</div>
 		</div>
 	);
