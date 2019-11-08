@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Search = props => {
-	const { searchVideos } = props;
+	const { searchVideos, videos } = props;
 
 	const [text, setText] = useState("");
 
