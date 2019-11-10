@@ -8,6 +8,7 @@ import VideoItem from "./components/layout/videos/VideoItem";
 import Details from "./components/layout/videos/Details";
 import Spinner from "./components/layout/Spinner";
 import Alert from "./components/layout/Alert";
+import Pagination from "./components/layout/Pagination";
 
 const App = () => {
 	const [videos, setVideos] = useState([]);
@@ -15,10 +16,14 @@ const App = () => {
 	const [alerts, setAlert] = useState([]);
 	const [loading, setLoading] = useState(false);
 
+	const [currentPage, setCurrentPage] = useState(1);
+	const [tokenNext, setTokenNext] = useState("");
+	const [tokenPrev, setTokenPrev] = useState("");
+
+	const [queryText, setQueryText] = useState("");
+
 	// normalmente eu iria colocar o .env.local no gitignore, por se tratar um teste, vou deixar publico, pois pretendo excluir a chave da api depois
 	const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
-
-	let pageToken = "CAYQAA";
 
 	const searchVideos = async text => {
 		if (text === "") {
@@ -30,14 +35,15 @@ const App = () => {
 		setLoading(true);
 
 		const res = await axios.get(
-			`https://www.googleapis.com/youtube/v3/search?part=id,snippet&q=${text}&key=${apiKey}&maxResults=6&type=video&pageToken=${pageToken}`
+			`https://www.googleapis.com/youtube/v3/search?part=id,snippet&q=${text}&key=${apiKey}&maxResults=6&type=video`
 		);
 
+		setQueryText(text);
+		setCurrentPage(1);
 		setVideos(res.data.items);
-		pageToken = res.data.nextPageToken;
+		setTokenNext(res.data.nextPageToken);
 
 		console.log(res);
-		console.log(pageToken);
 
 		setLoading(false);
 
@@ -51,6 +57,28 @@ const App = () => {
 		setVideoDetail(res.data.items);
 
 		console.log(videoDetail);
+	};
+
+	const nextPage = async () => {
+		const res = await axios.get(
+			`https://www.googleapis.com/youtube/v3/search?part=id,snippet&key=${apiKey}&maxResults=6&type=video&pageToken=${tokenNext}&q=${queryText}`
+		);
+		setVideos(res.data.items);
+
+		setTokenNext(res.data.nextPageToken);
+		setTokenPrev(res.data.prevPageToken);
+		setCurrentPage(currentPage + 1);
+	};
+
+	const prevPage = async () => {
+		const res = await axios.get(
+			`https://www.googleapis.com/youtube/v3/search?part=id,snippet&key=${apiKey}&maxResults=6&type=video&pageToken=${tokenPrev}&q=${queryText}`
+		);
+		setVideos(res.data.items);
+
+		setTokenNext(res.data.nextPageToken);
+		setTokenPrev(res.data.prevPageToken);
+		setCurrentPage(currentPage - 1);
 	};
 
 	const removeAlert = () => {
@@ -73,6 +101,13 @@ const App = () => {
 								))}
 							</div>
 							{loading && <Spinner />}
+							<Pagination
+								currentPage={currentPage}
+								nextPage={nextPage}
+								prevPage={prevPage}
+								tokenNext={tokenNext}
+								videos={videos}
+							/>
 						</Route>
 						<Route
 							exact

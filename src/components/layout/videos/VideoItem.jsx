@@ -6,8 +6,8 @@ export const VideoItem = props => {
 
 	return (
 		<div>
-			<div>
-				<img src={thumbnails.high.url} alt="img"></img>
+			<React.Fragment>
+				<img src={thumbnails.medium.url} alt="img"></img>
 
 				<h3 className="my video-title"> {title} </h3>
 				<p className="description">{description}</p>
@@ -19,7 +19,7 @@ export const VideoItem = props => {
 						Detalhes do Vídeo
 					</Link>
 				)}
-			</div>
+			</React.Fragment>
 		</div>
 	);
 };
