@@ -16,10 +16,16 @@ const Search = props => {
 	};
 
 	return (
-		<div>
+		<div className={videos.length < 1 ? "flexbox-center" : "flexbox-top my-2"}>
 			<form onSubmit={onSubmit}>
-				<input type="text" name="text" id="videoSearch" onChange={onChange} />
-				<input type="submit" value="Pesquisar" />
+				<input
+					type="text"
+					name="text"
+					id="videoSearch"
+					onChange={onChange}
+					placeholder="Pesquisar"
+				/>
+				<input type="submit" value="Buscar" />
 			</form>
 		</div>
 	);

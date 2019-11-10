@@ -6,22 +6,30 @@ const Details = props => {
 
 	useEffect(() => {
 		seeVideoDetail(match.params.videoId);
+		// eslint-disable-next-line
 	}, []);
 
 	return (
-		<div>
+		<div className="card">
 			{videoDetail.map(video => (
 				<React.Fragment key={video.id}>
-					<Link to="/">Voltar</Link>
-					<iframe
-						src={`http://www.youtube.com/embed/${match.params.videoId}`}
-					></iframe>
-					<i className="fa fa-thumbs-up" />
-					{video.statistics.likeCount}
-					<i className="fa fa-thumbs-down" />
-					{video.statistics.dislikeCount}
-					<i className="fa fa-eye" /> {video.statistics.viewCount}
-					<p>{video.snippet.description}</p>
+					<Link to="/" className="back my-1">
+						Voltar
+					</Link>
+					<div className="grid-video-details">
+						<iframe
+							title={video.id}
+							src={`http://www.youtube.com/embed/${match.params.videoId}`}
+						></iframe>
+						<div className="statistics">
+							<i className="fa fa-thumbs-up" />
+							{video.statistics.likeCount}
+							<i className="fa fa-thumbs-down" />
+							{video.statistics.dislikeCount}
+							<i className="fa fa-eye" /> {video.statistics.viewCount}
+						</div>
+						<p className="p">{video.snippet.description}</p>
+					</div>
 				</React.Fragment>
 			))}
 		</div>

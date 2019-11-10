@@ -6,13 +6,19 @@ export const VideoItem = props => {
 
 	return (
 		<div>
-			<div className="card">
-				<Link to={`/details/${props.video.id.videoId}`}>
-					<small>Detalhes</small>
-				</Link>
-				<h3> {title} </h3>
-				<p>{description}</p>
+			<div>
 				<img src={thumbnails.high.url} alt="img"></img>
+
+				<h3 className="my video-title"> {title} </h3>
+				<p className="description">{description}</p>
+				{props.video.id.kind !== "youtube#channel" && (
+					<Link
+						to={`/details/${props.video.id.videoId}`}
+						className="details my-1"
+					>
+						Detalhes do Vídeo
+					</Link>
+				)}
 			</div>
 		</div>
 	);
