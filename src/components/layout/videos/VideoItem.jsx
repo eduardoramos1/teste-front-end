@@ -5,7 +5,7 @@ export const VideoItem = props => {
 	const { title, thumbnails, description } = props.video.snippet;
 
 	return (
-		<div>
+		<div className="video-item">
 			<React.Fragment>
 				<img src={thumbnails.medium.url} alt="img"></img>
 

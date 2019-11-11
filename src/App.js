@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
-import "./Animate.css";
+
 import Search from "./components/layout/Search";
 import VideoItem from "./components/layout/videos/VideoItem";
 import Details from "./components/layout/videos/Details";
@@ -26,28 +26,31 @@ const App = () => {
 	const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
 
 	const searchVideos = async text => {
-		if (text === "") {
-			setAlert(["Por favor digite algo"]);
-			removeAlert();
-			return false;
+		try {
+			if (text === "") {
+				setAlert(["Por favor digite algo"]);
+				removeAlert();
+				return false;
+			}
+
+			setLoading(true);
+
+			const res = await axios.get(
+				`https://www.googleapis.com/youtube/v3/search?part=id,snippet&q=${text}&key=${apiKey}&maxResults=6&type=video`
+			);
+
+			setQueryText(text);
+			setCurrentPage(1);
+			setVideos(res.data.items);
+			setTokenNext(res.data.nextPageToken);
+
+			setLoading(false);
+
+			console.log(res);
+			console.log(videos);
+		} catch (err) {
+			if (err) return setAlert("Houve um erro no Servidor");
 		}
-
-		setLoading(true);
-
-		const res = await axios.get(
-			`https://www.googleapis.com/youtube/v3/search?part=id,snippet&q=${text}&key=${apiKey}&maxResults=6&type=video`
-		);
-
-		setQueryText(text);
-		setCurrentPage(1);
-		setVideos(res.data.items);
-		setTokenNext(res.data.nextPageToken);
-
-		console.log(res);
-
-		setLoading(false);
-
-		console.log(videos);
 	};
 
 	const seeVideoDetail = async videoId => {
@@ -90,12 +93,18 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<div className="App">
-				<div className="container">
+				<div className="container py-4">
 					<Switch>
 						<Route exact path="/">
 							<Alert alerts={alerts} />
 							<Search searchVideos={searchVideos} videos={videos} />
-							<div className="grid-3">
+							<div
+								className={
+									videos.length > 0
+										? "grid-3 fade-in-transition fade-in"
+										: "grid-3 fade-in-transition"
+								}
+							>
 								{videos.map((video, i) => (
 									<VideoItem key={i} video={video} />
 								))}

@@ -16,7 +16,11 @@ const Search = props => {
 	};
 
 	return (
-		<div className={videos.length < 1 ? "flexbox-center" : "flexbox-top my-2"}>
+		<div
+			className={
+				videos.length < 1 ? "search-box" : "search-box search-box-transition"
+			}
+		>
 			<form onSubmit={onSubmit}>
 				<input
 					type="text"
