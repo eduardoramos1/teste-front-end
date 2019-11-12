@@ -89,7 +89,7 @@ const App = () => {
 
 	const removeAlert = () => {
 		setTimeout(function() {
-			setAlert([]);
+			setAlert("");
 		}, 3000);
 	};
 

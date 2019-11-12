@@ -33,24 +33,6 @@ img {
 	position: relative;
 }
 
-.flexbox-center {
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-	height: 50vh;
-}
-
-.flexbox-top {
-	display: flex;
-	justify-content: center;
-	align-items: top;
-}
-
-.flexbox-justify-between {
-	display: flex;
-	justify-content: space-between;
-}
-
 .alert {
 	display: flex;
 	align-items: center;
