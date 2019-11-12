@@ -13,7 +13,7 @@ import Pagination from "./components/layout/Pagination";
 const App = () => {
 	const [videos, setVideos] = useState([]);
 	const [videoDetail, setVideoDetail] = useState([]);
-	const [alerts, setAlert] = useState([]);
+	const [alerts, setAlert] = useState("");
 	const [loading, setLoading] = useState(false);
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +28,7 @@ const App = () => {
 	const searchVideos = async text => {
 		try {
 			if (text === "") {
-				setAlert(["Por favor digite algo"]);
+				setAlert("Por favor digite algo");
 				removeAlert();
 				return false;
 			}
@@ -39,17 +39,22 @@ const App = () => {
 				`https://www.googleapis.com/youtube/v3/search?part=id,snippet&q=${text}&key=${apiKey}&maxResults=6&type=video`
 			);
 
+			if (res.data.items.length === 0) {
+				setAlert("Não foi encontrado resultado nesta pesquisa, tente de novo");
+				removeAlert();
+				setLoading(false);
+				return false;
+			}
+
 			setQueryText(text);
 			setCurrentPage(1);
 			setVideos(res.data.items);
 			setTokenNext(res.data.nextPageToken);
 
 			setLoading(false);
-
-			console.log(res);
-			console.log(videos);
 		} catch (err) {
-			if (err) return setAlert("Houve um erro no Servidor");
+			setLoading(false);
+			return setAlert("Houve um erro no Servidor");
 		}
 	};
 
@@ -58,8 +63,6 @@ const App = () => {
 			`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet,statistics&key=${apiKey}`
 		);
 		setVideoDetail(res.data.items);
-
-		console.log(videoDetail);
 	};
 
 	const nextPage = async () => {

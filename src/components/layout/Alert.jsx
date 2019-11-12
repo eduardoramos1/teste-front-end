@@ -5,14 +5,13 @@ const Alert = props => {
 
 	return (
 		<React.Fragment>
-			{alerts.length > 0 &&
-				alerts.map((alert, i) => (
-					<div className="alert" key={i}>
-						<div>
-							<i className="fa fa-exclamation-circle" /> {alert}
-						</div>
+			{alerts.length > 0 && (
+				<div className="alert">
+					<div>
+						<i className="fa fa-exclamation-circle" /> {alerts}
 					</div>
-				))}
+				</div>
+			)}
 		</React.Fragment>
 	);
 };

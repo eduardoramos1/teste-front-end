@@ -59,6 +59,10 @@ img {
 	color: white;
 	margin: 10px 10px;
 	height: 50px;
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	width: 100%;
 }
 
 .fade-in-transition {
